@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>warning</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="RIFOOD" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="RIFOOD---Extra-large:-Desktops---12-col" transform="translate(-786.000000, -177.000000)">
+            <g id="warning" transform="translate(786.000000, 177.000000)">
+                <circle id="Oval-Copy-6" fill="#FFA600" cx="13.5" cy="13.5" r="13.5"></circle>
+                <g id="priority-high" transform="translate(11.000000, 5.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <path d="M0.355152174,0.184782609 L4.07967478,0.184782609 L4.07967478,11.2717391 L0.355152174,11.2717391 L0.355152174,0.184782609 Z M0.874853261,16.2955348 C0.52838587,15.920195 0.355152174,15.4726737 0.355152174,14.9529709 C0.355152174,14.4332686 0.535603971,14.0001849 0.896507565,13.65372 C1.25741116,13.3072526 1.69771362,13.1340189 2.21741496,13.1340189 C2.73711728,13.1340189 3.17741974,13.3072526 3.53832235,13.65372 C3.89922594,14.0001874 4.07967774,14.433271 4.07967774,14.9529709 C4.07967774,15.4726732 3.89922594,15.9129757 3.53832235,16.2738783 C3.17741875,16.6347819 2.73711629,16.8152337 2.21741496,16.8152337 C1.69771264,16.8152337 1.25019133,16.642 0.874851043,16.2955326 L0.874853261,16.2955348 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
