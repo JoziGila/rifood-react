@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>ticked</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ui/unselected-copy" transform="translate(-24.000000, -14.000000)">
+            <g id="ticked" transform="translate(24.000000, 14.000000)">
+                <circle id="Oval-Copy-4" fill="#FFFFFF" cx="13.5" cy="13.5" r="13.5"></circle>
+                <g id="tick" transform="translate(5.000000, 7.000000)" fill="#37B34A" fill-rule="nonzero">
+                    <polygon id="Shape" points="4.68855624 9.62152965 1.66337832 6.59638446 0 8.25976278 3.99211452 12.2518446 3.9966953 12.2472311 4.72549693 12.9760327 15.9960082 1.70545603 14.3003681 0.00975051125"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -4,14 +4,15 @@ body {
 }
 
 .day {
-	width: 200px;
-	height: 120px;
+	width: 180px;
+	min-width: 170px;
+	height: 100px;
 	background-color: white;
 	border-radius: 10px;
 	padding: 10px;
-    width: 220px;
 	box-shadow: 0 12px 15px 0 rgba(0,0,0,0.04);
 	border-radius: 6px;
+	margin: 5px;
 }
 
 .selectedDay {
@@ -19,7 +20,7 @@ body {
 }
 
 .info {
-	width: 50%;
+	width: 70%;
 	height: 100%;
 	display: flex;
 	float: right;
@@ -36,9 +37,14 @@ body {
 }
 
 .check {
-	width: 25%;
+	width: 15%;
 	float: right;
 	text-align: right;
+}
+
+.check > img {
+	width: 90%;
+	height: auto;
 }
 
 .infoContentDay {
@@ -54,4 +60,105 @@ body {
 .infoContentMonth {
 	color: #B4B4B4;
 	font-size: 15px;
+}
+
+.weekArrow {
+	width: 50px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	margin: 18px; 
+}
+
+.weekArrow > img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.nextWeek {
+	transform: scaleX(-1);
+}
+
+.calendarContainer {
+	background-color: #E8EAF6;
+	width: 600px;
+}
+
+.calendar {
+	width: 80%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.menuTable {
+	width: 30%;
+	min-width: 330px;
+	box-shadow: 0 12px 15px 0 rgba(0,0,0,0.1);
+	border-radius: 5px;
+	color: #333333;
+}
+
+.menuTable > .header {
+	display: flex;
+	justify-content: center;
+	font-size: 16px;
+	background-color: lightgrey;
+	padding: 10px;
+	background: #F8F8FA;
+	box-shadow: 0 1px 0 0 #37B34A;
+	border-radius: 5px 5px 0 0;
+}
+
+.menuTable > .body {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+	margin-top: 1px;
+	padding-top: 5%;
+	padding-bottom: 5%;
+	flex-direction: column;
+}
+
+.body > .choice {
+	width: 85%;
+	display: flex;
+	border-radius: 5px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+	border: 1px solid #F4F6F9;
+}
+
+.choice:first-child {
+	margin-bottom: 5%;
+}
+
+.selectedChoice {
+	background: #37B34A 100%;
+	box-shadow: 0 12px 15px 0 rgba(55,179,74,0.10);
+	color: white;
+}
+
+.choice > .mealName {
+	font-size: 16px;
+}
+
+.choice > .selectedIcon {
+	width: 7%;
+	float: left;
+	margin: 3% 8% 3% 3%;
+}
+
+.choice > .mealName {
+	width: 70%;
+	float: right;
+	font-size: 16px;
 }
