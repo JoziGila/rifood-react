@@ -1,88 +1,90 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import moment from 'moment';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			days: [],
-			menu: {primary: "prim", secondary: "sec"},
+			menu: [],
 			error: ''
 		}
 
 		this.generateWeekDays = this.generateWeekDays.bind(this);
 		this.loadMenuForDate = this.loadMenuForDate.bind(this);
+		this.handleWeekControls = this.handleWeekControls.bind(this);
+		this.handleDayClick = this.handleDayClick.bind(this);
+		this.handleMealSelect = this.handleMealSelect.bind(this);
 		this._dayOfWeekAsString = this._dayOfWeekAsString.bind(this);
 		this._monthAsString = this._monthAsString.bind(this);
 	}
 
 	componentDidMount() {
-		this.initDays();
-	}
-
-	initDays() {
-		// Get current day
-		let currentDate = new Date();
-		// Call genereateWeekDays
-		this.generateWeekDays(currentDate);
-		// Call getMenuForSelectedDay
+		const now = moment();
+		this.generateWeekDays(now);
 	}
 
 	generateWeekDays(date) {
-		let day = date.getDay();
-		let diff = date.getDate() - day + (day === 0 ? -6:1);
-		let monday = new Date(date.setDate(diff));
-		let friday = new Date();
-		friday.setDate(monday.getDate() + 4)
-		
+		let day = date.day();
+		let monday = moment(date).subtract(day - 1, "days");
+		let friday = moment(monday).add(4, "days");
+
+
 		let dayObjs = [];
-		for (let current = monday; current <= friday; current.setDate(current.getDate() + 1)) {
+		for (let current = monday; current.isSameOrBefore(friday); current.add(1, "days")) {
 			const dayObj = {
-				day: this._dayOfWeekAsString(current.getDay()),
-				date: current.getDate(),
-				month: this._monthAsString(current.getMonth()),
-				selected: date === current,
+				datetime: moment(current),
+				day: this._dayOfWeekAsString(current.day()),
+				date: current.date(),
+				month: this._monthAsString(current.month()),
+				selected: date.isSame(current),
 				hasOrder: false
 			}
 			dayObjs.push(dayObj);
 		}
 
-		// Get Status
-		this.setState({days: dayObjs}, function () {
-			console.log(this.state);
-		});
+		this.setState({ days: dayObjs });
 
 		this.loadMenuForDate(date);
 	}
 
 	_dayOfWeekAsString(dayIndex) {
-		return ["Sunday", "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayIndex];
+		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
 	}
 
 	_monthAsString(monthIndex) {
 		return ["January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December"
-	  ][monthIndex];
+			"July", "August", "September", "October", "November", "December"
+		][monthIndex];
 	}
 
-	loadMenuForDate(date) {
-		console.log("Menu")
+	loadMenuForDate(datetime) {
 		// Get menu from API
-		let menuObj = {
-			primary: [{name: "Patate me kos", selected: true}, {name: "Pule me dicka", selected: false}],
-			secondary: [{name: "Sallate jeshile", selected: false}, {name: "Supe me perime", selected: true}]
-		}
+		let menuObj =
+			[{ id: 1, name: "Patate me kos", selected: true, type: "Primary" }, { id: 2, name: "Pule me dicka", selected: false, type: "Primary" },
+			{ id: 3, name: "Sallate jeshile", selected: false, type: "Secondary" }, { id: 4, name: "Supe me perime", selected: true, type: "Secondary" }];
 
 		// Set menu to state
-		this.setState({menu: menuObj}, function () {
-			console.log(this.state);
-		});
+		this.setState({ menu: menuObj });
 	}
 
-	handleDayClick() {
+	handleDayClick(datetime) {
+		let daysCopy = [...this.state.days];
+
+		// Remove selected
+		daysCopy.map(d => {
+			d.selected = false;
+			return d;
+		});
+
 		// Set selected
+		const newSelectedIndex = this.state.days.findIndex(d => d.datetime.isSame(datetime));
+		daysCopy[newSelectedIndex].selected = true;
+
 		// Call get menu for selected
+		this.loadMenuForDate(datetime);
 	}
 
 	handleSubmitClick() {
@@ -90,32 +92,67 @@ class App extends React.Component {
 		// Send to server
 	}
 
-	handleWeekControls() {
-		// If next find next monday and sunday
-		// If prev find last monday and sunday
-		//
+	handleWeekControls(type) {
+		let newCurrent = moment(this.state.days.filter(d => d.selected === true)[0].datetime);
+		newCurrent.add((type === "next" ? 7 : -7), "days");
+
+		this.generateWeekDays(newCurrent);
+	}
+
+	handleMealSelect(id, type) {
+		let menuCopy = [...this.state.menu];
+		let clickedMeal = menuCopy.filter(m => m.id === id)[0];
+
+		if (clickedMeal.selected === true) {
+			clickedMeal.selected = false;
+		} else {
+			// If no primaries are selected no restriction is applied to secondary meals
+			if (menuCopy.filter(m => m.type === "Primary" && m.selected === false).length === 2) {
+				if (clickedMeal.type === "Secondary") {
+					clickedMeal.selected = true;
+				} else if (menuCopy.filter(m => m.type === "Secondary" && m.selected === true).length !== 2) {
+					clickedMeal.selected = true;
+				}
+			} else {
+				// Deselect all except the clicked one
+				menuCopy.filter(m => m.type === type).map(m => {
+					m.selected = (m.id === id ? true : false);
+					return m;
+				})
+			}
+		}
+
+		this.setState({ ...this.state.menu, menuCopy });
+
 	}
 
 	render() {
+		const calendarFunctions = {
+			weekControl: this.handleWeekControls,
+			dayClick: this.handleDayClick
+		}
+
+		const menuFunctions = {
+			mealSelect: this.handleMealSelect
+		}
+
 		return (
 			<div className="app">
-				<Calendar days={this.state.days} />
-				<MenuTable type="Primary" meals={this.state.menu.primary} />
-				<MenuTable type="Secondary" meals={this.state.menu.secondary} />
+				<Calendar days={this.state.days} {...calendarFunctions} />
+				<div className="menus">
+					<MenuTable type="Primary" key="prim" {...menuFunctions} meals={this.state.menu.filter(m => m.type === "Primary")} />
+					<MenuTable type="Secondary" key="sec" {...menuFunctions} meals={this.state.menu.filter(m => m.type === "Secondary")} />
+				</div>
 			</div>
 		);
 	}
 }
 
-	
-class Day extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
+class Day extends React.Component {
 	render() {
 		return (
-			<div className={ this.props.selected ? "day selectedDay" : "day"}>
+			<div className={this.props.selected ? "day selectedDay" : "day"} onClick={() => this.props.dayClick(this.props.datetime)}>
 				<div className={"check"}>
 					<img src={process.env.PUBLIC_URL + '/img' + (this.props.hasOrder ? '/check.svg' : '/warning.svg')} alt="check" />
 				</div>
@@ -132,25 +169,16 @@ class Day extends React.Component {
 }
 
 class Calendar extends React.Component {
-	constructor(props){
-		super(props);
-	}
+	render() {
+		return (
 
-	onClick() {
-		console.log(this.props)
-	}
-
-	render(){
-		return(
-
-			<div className='calenderContainer' onClick={() => this.onClick()}>
+			<div className='calendarContainer'>
 				<div className='calendar'>
-					<div className='weekArrow prevWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'prevWeek'}/></div>
+					<div className='weekArrow prevWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'prevWeek'} onClick={() => this.props.weekControl("prev")} /></div>
 					{this.props.days.map((day, key) => {
-						console.log(day);
-						return <Day key={key} {...day}></Day>
+						return <Day key={key} {...day} dayClick={this.props.dayClick}></Day>
 					})}
-					<div className='weekArrow nextWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'nextWeek'}/></div>
+					<div className='weekArrow nextWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'nextWeek'} onClick={() => this.props.weekControl("next")} /></div>
 				</div>
 			</div>
 		);
@@ -158,20 +186,15 @@ class Calendar extends React.Component {
 }
 
 class MenuTable extends React.Component {
-	constructor(props){
-		super(props);
-		console.log(props)
-	}
-
-	render(){
-		return(
-			<div className="menuTable">
+	render() {
+		return (
+			<div className="menuTable" >
 				<div className="header">{this.props.type}</div>
 				<div className="body">
 					{this.props.meals.map((meal, key) => {
 						return (
-							<div className={'choice ' + (meal.selected ? 'selectedChoice' : '')} id={key}>
-								<img className='selectedIcon' src={process.env.PUBLIC_URL + '/img' + (meal.selected ? '/tick.svg' : '/empty.svg') } />
+							<div key={key} className={'choice ' + (meal.selected ? 'selectedChoice' : '')} id={key} onClick={() => this.props.mealSelect(meal.id, meal.type)}>
+								<img className='selectedIcon' src={process.env.PUBLIC_URL + '/img' + (meal.selected ? '/tick.svg' : '/empty.svg')} />
 								<div className='mealName'>{meal.name}</div>
 							</div>
 						);
@@ -183,6 +206,6 @@ class MenuTable extends React.Component {
 }
 
 ReactDOM.render(
-  <App  />,
-  document.getElementById('root')
+	<App />,
+	document.getElementById('root')
 );
