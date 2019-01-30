@@ -81,7 +81,7 @@ body {
 	max-height: 100%;
 }
 
-.nextWeek {
+.prevWeek {
 	transform: scaleX(-1);
 }
 
