@@ -154,7 +154,7 @@ class Day extends React.Component {
 		return (
 			<div className={this.props.selected ? "day selectedDay" : "day"} onClick={() => this.props.dayClick(this.props.datetime)}>
 				<div className={"check"}>
-					<img src={process.env.PUBLIC_URL + '/img' + (this.props.hasOrder ? '/check.svg' : '/warning.svg')} alt="check" />
+					<img src={process.env.PUBLIC_URL + './img' + (this.props.hasOrder ? '/check.svg' : '/warning.svg')} alt="check" />
 				</div>
 				<div className={"info"}>
 					<div className={"infoContent"}>
@@ -174,11 +174,11 @@ class Calendar extends React.Component {
 
 			<div className='calendarContainer'>
 				<div className='calendar'>
-					<div className='weekArrow prevWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'prevWeek'} onClick={() => this.props.weekControl("prev")} /></div>
+					<div className='weekArrow prevWeek'><img src={process.env.PUBLIC_URL + './img/weekArrow.png'} alt={'prevWeek'} onClick={() => this.props.weekControl("prev")} /></div>
 					{this.props.days.map((day, key) => {
 						return <Day key={key} {...day} dayClick={this.props.dayClick}></Day>
 					})}
-					<div className='weekArrow nextWeek'><img src={process.env.PUBLIC_URL + '/img/weekArrow.png'} alt={'nextWeek'} onClick={() => this.props.weekControl("next")} /></div>
+					<div className='weekArrow nextWeek'><img src={process.env.PUBLIC_URL + './img/weekArrow.png'} alt={'nextWeek'} onClick={() => this.props.weekControl("next")} /></div>
 				</div>
 			</div>
 		);
@@ -194,7 +194,7 @@ class MenuTable extends React.Component {
 					{this.props.meals.map((meal, key) => {
 						return (
 							<div key={key} className={'choice ' + (meal.selected ? 'selectedChoice' : '')} id={key} onClick={() => this.props.mealSelect(meal.id, meal.type)}>
-								<img className='selectedIcon' src={process.env.PUBLIC_URL + '/img' + (meal.selected ? '/tick.svg' : '/empty.svg')} />
+								<img className='selectedIcon' src={process.env.PUBLIC_URL + './img' + (meal.selected ? '/tick.svg' : '/empty.svg')} />
 								<div className='mealName'>{meal.name}</div>
 							</div>
 						);
