@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
+import { Button, Container, Col, Row } from 'react-bootstrap';
+
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			days: [],
-			menu: [],
+			menu: { meals: [], buke: false },
 			error: ''
 		}
 
@@ -17,6 +19,7 @@ class App extends React.Component {
 		this.handleWeekControls = this.handleWeekControls.bind(this);
 		this.handleDayClick = this.handleDayClick.bind(this);
 		this.handleMealSelect = this.handleMealSelect.bind(this);
+		this.handleBukeSelect = this.handleBukeSelect.bind(this);
 		this._dayOfWeekAsString = this._dayOfWeekAsString.bind(this);
 		this._monthAsString = this._monthAsString.bind(this);
 	}
@@ -62,9 +65,12 @@ class App extends React.Component {
 
 	loadMenuForDate(datetime) {
 		// Get menu from API
-		let menuObj =
-			[{ id: 1, name: "Patate me kos", selected: true, type: "Primary" }, { id: 2, name: "Pule me dicka", selected: false, type: "Primary" },
-			{ id: 3, name: "Sallate jeshile", selected: false, type: "Secondary" }, { id: 4, name: "Supe me perime", selected: true, type: "Secondary" }];
+		let menuObj = {
+			meals:
+				[{ id: 1, name: "Patate me kos", selected: true, type: "Primary" }, { id: 2, name: "Pule me dicka", selected: false, type: "Primary" },
+				{ id: 3, name: "Sallate jeshile", selected: false, type: "Secondary" }, { id: 4, name: "Supe me perime", selected: true, type: "Secondary" }],
+			buke: false
+		};
 
 		// Set menu to state
 		this.setState({ menu: menuObj });
@@ -100,7 +106,7 @@ class App extends React.Component {
 	}
 
 	handleMealSelect(id, type) {
-		let menuCopy = [...this.state.menu];
+		let menuCopy = [...this.state.menu.meals];
 		let clickedMeal = menuCopy.filter(m => m.id === id)[0];
 
 		if (clickedMeal.selected === true) {
@@ -122,8 +128,13 @@ class App extends React.Component {
 			}
 		}
 
-		this.setState({ ...this.state.menu, menuCopy });
+		this.setState({ ...this.state.menu.meals, menuCopy });
+	}
 
+	handleBukeSelect() {
+		let menuCopy = { ...this.state.menu }
+		menuCopy.buke = !menuCopy.buke;
+		this.setState({ menu: menuCopy });
 	}
 
 	render() {
@@ -139,10 +150,17 @@ class App extends React.Component {
 		return (
 			<div className="app">
 				<Calendar days={this.state.days} {...calendarFunctions} />
-				<div className="menus">
-					<MenuTable type="Primary" key="prim" {...menuFunctions} meals={this.state.menu.filter(m => m.type === "Primary")} />
-					<MenuTable type="Secondary" key="sec" {...menuFunctions} meals={this.state.menu.filter(m => m.type === "Secondary")} />
-				</div>
+				<Container>
+					<Row>
+						<Col><MenuTable type="Primary" key="prim" {...menuFunctions} meals={this.state.menu.meals.filter(m => m.type === "Primary")} /></Col>
+						<Col><MenuTable type="Secondary" key="sec" {...menuFunctions} meals={this.state.menu.meals.filter(m => m.type === "Secondary")} /></Col>
+					</Row>
+					<Row>
+						<Col></Col>
+					</Row>
+				</Container>
+
+
 			</div>
 		);
 	}
@@ -199,6 +217,22 @@ class MenuTable extends React.Component {
 							</div>
 						);
 					})}
+				</div>
+			</div>
+		);
+	}
+}
+
+class Buke extends React.Component {
+	render() {
+		return (
+
+			<div className="menuTable buke" >
+				<div className="body">
+					<div className={'buke choice ' + (this.props.buke === true ? 'selectedChoice' : '')} onClick={() => this.props.bukeSelect()}>
+						<img className='selectedIcon' src={process.env.PUBLIC_URL + './img' + (this.props.buke === true ? '/tick.svg' : '/empty.svg')} />
+						<div className='mealName'>Buke</div>
+					</div>
 				</div>
 			</div>
 		);

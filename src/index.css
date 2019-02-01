@@ -12,7 +12,6 @@ body {
 .day {
     width: 180px;
     min-width: 170px;
-    height: 100px;
     background-color: white;
     border-radius: 10px;
     padding: 10px;
@@ -106,14 +105,16 @@ body {
 
 .menus {
     display: flex;
-    width: 60%;
     align-items: center;
     justify-content: center;
     margin-top: 1rem;
 }
 
+.menuContainer {
+    width: 60%;
+}
+
 .menuTable {
-    width: 44%;
     min-width: 330px;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -156,7 +157,7 @@ body {
 }
 
 .choice:first-child {
-    margin-bottom: 5%;
+    margin-bottom: 1rem !important;
 }
 
 .selectedChoice {
@@ -179,4 +180,20 @@ body {
     width: 70%;
     float: right;
     font-size: 16px;
+}
+
+.menuTable .buke {
+    margin-bottom: 0px !important;
+}
+
+.menuTable.buke>.body {
+    padding: 1rem 0px !important;
+}
+
+.container {
+    width: 50%;
+}
+
+.col {
+    padding: 0 !important;
 }
