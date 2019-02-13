@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Rifood</title>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans+Condensed:400,400i|IBM+Plex+Sans:100,100i,400,400i,700,700i|IBM+Plex+Serif:400,400i"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: url('./img/background.png');
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            background-size: 800px;
+            height: 100vh;
+            margin: 0;
+            padding-left: 10%;
+        }
+
+        #logo {
+
+            margin-top: 2rem;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            margin-top: 10vh;
+        }
+
+        #login-btn {}
+    </style>
+</head>
+
+<body>
+    <img id="logo" src='./img/logo.svg' />
+    <h1>Sign In</h1>
+    <button class='btn btn-success btn-lg' id="btn-login"><b>Login with RITECH account</b></button>
+
+    <script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script>
+
+        window.addEventListener('load', function () {
+
+            const loginLabel = document.getElementById('login-label');
+            const loginBtn = document.getElementById('btn-login');
+
+            loginBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                webAuth.authorize();
+            });
+
+            const webAuth = new auth0.WebAuth({
+                domain: 'ritech.auth0.com',
+                clientID: 'jS01HCM4kXmpvGb3GHpKcRn1KM9YRYAZ',
+                responseType: 'token id_token',
+                scope: 'openid profile',
+                audience: 'https://food.ritech.co',
+                redirectUri: window.location.href
+            });
+
+
+            function localLogin(authResult) {
+                localStorage.setItem('token', authResult.accessToken);
+                const user = {
+                    "name": authResult.idTokenPayload.name
+                };
+                localStorage.setItem('user', user);
+            }
+
+            function handleAuthentication() {
+                webAuth.parseHash(function (err, authResult) {
+                    if (authResult && authResult.accessToken && authResult.idToken) {
+                        localLogin(authResult);
+                        loginBtn.style.display = 'none';
+                        window.location.hash = '';
+                        window.location = "./index.html";
+                    }
+                });
+            }
+
+            handleAuthentication();
+        });
+
+
+    </script>
+</body>
+
+</html>

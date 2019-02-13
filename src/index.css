@@ -119,7 +119,6 @@ body {
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #333333;
-    margin: 1rem;
 }
 
 .menuTable>.header {
@@ -191,9 +190,45 @@ body {
 }
 
 .container {
-    width: 50%;
+    max-width: 50%;
+    min-width: 330px;
+}
+
+.buttonContainer {
+    display: flex;
+    height: 100%;
+    justify-content: flex-end
+}
+
+.submit {
+    margin: auto 0;
+    width: 150px;
 }
 
 .col {
-    padding: 0 !important;
+    padding: 0.5rem !important;
+}
+
+.app>.header {
+    height: 80px;
+    width: 100%;
+    padding: 1rem;
+    background: white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header>button {
+    margin-left: auto;
+}
+
+.block {
+    width: 100vw;
+    min-height: 100vh !important;
+    height: auto;
+}
+
+.unavailable {
+    color: lightgray;
 }
